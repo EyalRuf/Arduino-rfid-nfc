@@ -16,20 +16,13 @@ SPI should be installed by default
 #define RST_PIN 5
 MFRC522 rfid(SS_PIN, RST_PIN);
 
-byte savedUID[4] = {0x29,0x18,0x66,0xB3};
-
 void setup() {
-  // Initialization stuff
+  // More initialization stuff
   Serial.begin(9600);
   SPI.begin(); // init SPI bus
   rfid.PCD_Init(); // init MFRC522
-
-  // Print saved uid
-  Serial.print("Saved UID:" );
-  printArrAsHex(savedUID, 4);
-  Serial.println();
-
   Serial.println("Tap RFID/NFC Tag on reader");
+ 
 }
 
 void loop() {
@@ -41,20 +34,9 @@ void loop() {
       byte currUID[4] = {0,0,0,0};
       copyByteArr(currUID, rfid.uid.uidByte, 4);
 
-      // Print current UID
-      Serial.println();
+      // Printing it in hex format
       Serial.print("Current UID:");
       printArrAsHex(currUID, 4);
-      Serial.println();
-
-      if (compareByteArr(savedUID, currUID, 4)) {
-        Serial.print("Authorized.");
-        Serial.println();
-      }
-      else {
-        Serial.print("Unauthorized.");
-        Serial.println();
-      }
 
       // Finish reading current card/tag
       rfid.PICC_HaltA(); // halt PICC
@@ -73,6 +55,7 @@ void printArrAsHex(byte arr[], int arrSize) {
       Serial.print(arr[i] < 0x10 ? " 0" : " ");
       Serial.print(arr[i], HEX);
     }
+    Serial.println();
 }
 
 /*
@@ -85,20 +68,4 @@ void copyByteArr (byte copyInto[], byte copyFrom[], int arrSize) {
   for (int i = 0; i < arrSize; i++) {
     copyInto[i] = copyFrom[i];
   }
-}
-
-/*
- * Compares two byte arrays - returns true if they're indentical, returns false otherwise.
- * arr1 - first byte array to compare
- * arr2 - second byte array to compare
- * arrSize - size of the arrays
- */
-bool compareByteArr (byte arr1[], byte arr2[], int arrSize) {
-  for (int i = 0; i < arrSize; i++) {
-    if (arr1[i] != arr2[i]) {
-      return false;
-    }
-  }
-
-  return true;
 }

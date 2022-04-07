@@ -5,11 +5,12 @@
  */
 
 /* Required Libraries -> If you get an error about not finding these libraries ->
-Go to tools -> Manage Libraries and search for 'MFRC522' -> install it. 
+Go to tools -> Manage Libraries and search for 'MFRC522' (and LinkedList) -> install them. 
 SPI should be installed by default 
 */ 
 #include <SPI.h>
 #include <MFRC522.h>
+#include <LinkedList.h>
 
 // Initialization stuff
 #define SS_PIN 10
@@ -17,6 +18,11 @@ SPI should be installed by default
 MFRC522 rfid(SS_PIN, RST_PIN);
 
 byte savedUID[4] = {0x29,0x18,0x66,0xB3};
+class UidEntry {
+  public:
+    byte *uid;
+};
+
 
 void setup() {
   // Initialization stuff
@@ -28,6 +34,12 @@ void setup() {
   Serial.print("Saved UID:" );
   printArrAsHex(savedUID, 4);
   Serial.println();
+
+  UidEntry *preSaved = new UidEntry();
+  preSaved->uid = savedUID;
+
+  LinkedList<UidEntry*> myUIDS = LinkedList<UidEntry*>();
+  myUIDS.add(preSaved);
 
   Serial.println("Tap RFID/NFC Tag on reader");
 }
