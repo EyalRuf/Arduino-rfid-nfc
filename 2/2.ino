@@ -1,6 +1,10 @@
 /*
  * Created by Eyal Rufeisen
  *
+ * Compares any scanned nfc to the saved one.
+ * Can do any action you want based on whether it matches (whether it's 'authorized').
+ * Right now it just prints out if it's the right one or not.
+ *
  * Based on example code from: https://arduinogetstarted.com/tutorials/arduino-rfid-nfc
  */
 
