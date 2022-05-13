@@ -2,8 +2,8 @@ ARDUINO + NFC/RFID - quick examples/guide.
 
 There are 3 examples that are ordered from simple to more complicated.
 If you're somewhat new to coding and or arduino, I'd highly suggest just trying to make example 1 work
-before jumping into the more complex ones. I also added some pictures of the settup but clearer instructions for it 
-can be found in the link 'Arduino - RFID-NFC - Arduino Tutorial'.
+before jumping into the more complex ones. I also added some pictures of the settup, but clearer instructions for how to set up all the cables and etc 
+can be found in the links mentioned below.
 
 Written by Eyal Rufeisen - e.rufeisen@st.hanze.nl .
 
