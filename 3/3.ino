@@ -11,14 +11,15 @@
 */
 #include <SPI.h>
 #include <MFRC522.h>
-#include <LinkedList.h>
 
 // Initialization stuff
 #define SS_PIN 10
 #define RST_PIN 5
 MFRC522 rfid(SS_PIN, RST_PIN);
 
-int maxAmountOfUIDS = 100;
+
+// Our UID 'database'
+int uidDBSize = 100;
 byte myUIDS[100][4] = {
     {0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},
     {0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0},
@@ -167,7 +168,7 @@ bool compareByteArr (byte arr1[], byte arr2[], int arrSize) {
 }
 
 /*
-
+    Checks the whole Database for a specific UID, returns true if found, false otherwise
 */
 bool UIDExistsInList (byte uidToSearch[]) {
   for (int i = 0; i < uidsCounter; i++) {
@@ -180,8 +181,14 @@ bool UIDExistsInList (byte uidToSearch[]) {
   return false;
 }
 
+/*
+    Checks the whole Database for a specific UID, if it's not there already, it's added to the database. It prints a message according to result.
+    Also, if the database is full it doesn't add it to the list and prints a message accordingly.
+    
+    uidToAdd - the UID to add to the database (if it's not added already)
+*/
 void AddUIDToList (byte uidToAdd[4]) { 
-  if (uidsCounter >= maxAmountOfUIDS) {
+  if (uidsCounter >= uidDBSize) {
     Serial.println("Sorry, max amount of UIDS have already been added.");
   } else {
     copyByteArr(myUIDS[uidsCounter],uidToAdd, 4);

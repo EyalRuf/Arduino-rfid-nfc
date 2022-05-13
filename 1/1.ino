@@ -30,13 +30,9 @@ void loop() {
     if (rfid.PICC_ReadCardSerial()) { // NUID has been readed
       MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
 
-      // Read rfid into our own arr
-      byte currUID[4] = {0,0,0,0};
-      copyByteArr(currUID, rfid.uid.uidByte, 4);
-
       // Printing it in hex format
       Serial.print("Current UID:");
-      printArrAsHex(currUID, 4);
+      printArrAsHex(rfid.uid.uidByte, 4);
 
       // Finish reading current card/tag
       rfid.PICC_HaltA(); // halt PICC
@@ -56,16 +52,4 @@ void printArrAsHex(byte arr[], int arrSize) {
       Serial.print(arr[i], HEX);
     }
     Serial.println();
-}
-
-/*
- * Copys/reads rfid bytes into the array byte by byte
- * copyInto - copys the bytes into this array
- * copyFrom - copys the bytes from this array
- * arrSize - array size
- */
-void copyByteArr (byte copyInto[], byte copyFrom[], int arrSize) {
-  for (int i = 0; i < arrSize; i++) {
-    copyInto[i] = copyFrom[i];
-  }
 }
